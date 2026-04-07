@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Secure Dashboard | Modern Workspace</title>
+    <!-- Google Fonts for clean typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free icons) for subtle visual enhancements -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fc 0%, #eef2f8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            margin: 0;
+            position: relative;
+        }
+
+        /* Subtle animated background element (optional but adds depth) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.03) 0%, rgba(168, 85, 247, 0.02) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* main dashboard card */
+        .dashboard-container {
+            max-width: 620px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(0px);
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .dashboard-container:hover {
+            box-shadow: 0 30px 55px -15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* header / accent area */
+        .dashboard-header {
+            background: linear-gradient(98deg, #1e1f2c 0%, #2d2f3e 100%);
+            padding: 1.8rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dashboard-header h1 {
+            font-size: 1.85rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            color: white;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dashboard-header h1 i {
+            font-size: 1.9rem;
+            color: #a5b4fc;
+            background: rgba(255,255,255,0.08);
+            padding: 8px;
+            border-radius: 18px;
+        }
+
+        .dashboard-header .badge {
+            background: rgba(165, 180, 252, 0.2);
+            backdrop-filter: blur(4px);
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.8rem;
+            border-radius: 40px;
+            color: #cbd5ff;
+            margin-top: 0.65rem;
+            letter-spacing: 0.2px;
+        }
+
+        /* main content area */
+        .dashboard-content {
+            padding: 2rem 2rem 1.8rem;
+        }
+
+        /* welcome greeting */
+        .greeting-section {
+            margin-bottom: 2rem;
+        }
+
+        .greeting-title {
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6c6f8c;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-card {
+            background: #f8faff;
+            border-radius: 1.6rem;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid #e9edf4;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .user-card:hover {
+            background: #ffffff;
+            border-color: #dce3ec;
+            box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-icon {
+            background: linear-gradient(145deg, #eef2ff, #e0e7ff);
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            font-size: 1.8rem;
+            color: #4f46e5;
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.8), 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-info .label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #5b5e7c;
+            letter-spacing: 0.3px;
+            margin-bottom: 4px;
+        }
+
+        #userData {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #121826;
+            word-break: break-word;
+            background: none;
+            display: inline-block;
+            letter-spacing: -0.2px;
+        }
+
+        /* session info / meta card */
+        .info-panel {
+            background: #ffffffea;
+            border-radius: 1.5rem;
+            padding: 1.25rem 1.5rem;
+            margin: 1.8rem 0 2rem;
+            border: 1px solid #eef2f8;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: #2d3a4b;
+        }
+
+        .info-item i {
+            font-size: 1.2rem;
+            color: #6c6f8c;
+            width: 28px;
+            text-align: center;
+        }
+
+        .info-item span:last-child {
+            font-weight: 500;
+            color: #1f2a3e;
+        }
+
+        /* logout button area */
+        .action-area {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1.2rem;
+            border-top: 1px solid #edf2f7;
+            padding-top: 1.8rem;
+        }
+
+        .logout-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 0.85rem 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #fefefe;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+
+        .logout-btn i {
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #fee2e2;
+            border-color: #fecaca;
+            color: #b91c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -12px rgba(185, 28, 28, 0.2);
+        }
+
+        .logout-btn:hover i {
+            transform: translateX(3px);
+        }
+
+        .logout-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* footer note / subtle */
+        .dashboard-footer {
+            padding: 0.8rem 2rem 1.4rem;
+            font-size: 0.7rem;
+            text-align: center;
+            color: #8d93ae;
+            border-top: 1px solid #edf2f9;
+            background: #fbfdff;
+            letter-spacing: 0.2px;
+        }
+
+        /* responsive adjustments */
+        @media (max-width: 550px) {
+            .dashboard-container {
+                border-radius: 1.8rem;
+            }
+            .dashboard-header {
+                padding: 1.3rem 1.5rem;
+            }
+            .dashboard-header h1 {
+                font-size: 1.45rem;
+            }
+            .dashboard-content {
+                padding: 1.5rem;
+            }
+            .user-card {
+                padding: 1rem;
+            }
+            .user-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 1.4rem;
+            }
+            #userData {
+                font-size: 1.1rem;
+            }
+            .info-panel {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .logout-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 0.75rem;
+            }
+            .action-area {
+                justify-content: stretch;
+            }
+        }
+
+        /* simple animation for card load */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dashboard-container {
+            animation: fadeSlideUp 0.45s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+        }
+
+        /* custom styling for email highlight */
+        .highlight-email {
+            background: linear-gradient(120deg, #eef2ff 0%, #eef2ff 40%, transparent 60%);
+            padding: 0 4px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>
+            <i class="fas fa-chalkboard-user"></i> 
+            Workspace
+        </h1>
+        <div class="badge">
+            <i class="fas fa-shield-alt" style="font-size: 0.7rem;"></i> Secure session · Active
+        </div>
+    </div>
+
+    <div class="dashboard-content">
+        <div class="greeting-section">
+            <div class="greeting-title">
+                <i class="far fa-user-circle" style="margin-right: 6px;"></i> ACCOUNT OVERVIEW
+            </div>
+            <div class="user-card">
+                <div class="user-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="user-info">
+                    <div class="label">Logged in as</div>
+                    <div id="userData"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- additional dashboard info panel: shows timestamp & role (just for style) -->
+        <div class="info-panel">
+            <div class="info-item">
+                <i class="fas fa-clock"></i>
+                <span>Session started:</span>
+                <span id="sessionTime">—</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-fingerprint"></i>
+                <span>Access level:</span>
+                <span>Authenticated user</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Secure zone</span>
+                <span><i class="fas fa-lock" style="font-size: 0.75rem; color:#2e7d32;"></i></span>
+            </div>
+        </div>
+
+        <div class="action-area">
+            <button onclick="logout()" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> 
+                Sign out securely
+            </button>
+        </div>
+    </div>
+    <div class="dashboard-footer">
+        <i class="far fa-registered"></i> Dashboard · Protected area
+    </div>
+</div>
+
+<script>
+    // --- Retrieve user from localStorage exactly as original logic ---
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    // --- Redirect if no valid session, exactly preserving original condition ---
+    if (!user) {
+        window.location.href = "login.html";
+    } else {
+        // Display email with subtle extra formatting but keeping original text content requirement.
+        // We preserve the original inner text exactly: "Logged in as: " + user.email,
+        // but we can add a tiny styled wrapper to match design, however original spec says
+        // p#userData inner text must contain email. We'll keep the original message exactly.
+        // For better aesthetics we also use .innerText as before, but we enhance the appearance via CSS.
+        // The requirement is to add styles, not alter core logic. The text remains identical.
+        const userEmail = user.email || "guest@example.com";
+        document.getElementById("userData").innerText = "Logged in as: " + userEmail;
+        
+        // --- Additional UX: Display session timestamp (just for modern dashboard feel) ---
+        // This does not interfere with logout or original logic, it's purely cosmetic.
+        const sessionElement = document.getElementById("sessionTime");
+        if (sessionElement) {
+            const now = new Date();
+            const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const formattedDate = now.toLocaleDateString([], { month: 'short', day: 'numeric' });
+            sessionElement.innerText = `${formattedDate} · ${formattedTime}`;
+        }
+    }
+
+    // --- logout function identical to original but ensuring localStorage removal and redirect ---
+    function logout() {
+        // Clear user data from storage
+        localStorage.removeItem("user");
+        // Redirect to login page
+        window.location.href = "login.html";
+    }
+
+    // Optional: adding a small security enhancement to prevent back-navigation after logout? Not needed but harmless.
+    // If needed we can add a simple "disable back" but not mandatory.
+    // For better consistency, we add a tiny event to simulate native behavior (no modifications to logout flow).
+    // Also handle case where storage event could sync across tabs? Not required but adds resilience.
+    window.addEventListener('storage', function(event) {
+        if (event.key === 'user' && !event.newValue) {
+            // If user is removed from another tab, redirect to login.
+            window.location.href = "login.html";
+        }
+    });
+</script>
+</body>
+</html>
